@@ -1,7 +1,9 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import AddItemForm from "./AdditemForm";
 import {EditableSpan} from "./EditableSpan";
+import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Delete} from "@material-ui/icons";
 
 type PropsType = {
   id: string
@@ -35,12 +37,21 @@ function TodoList(props: PropsType) {
     }
     return (
       <li key={taskObj.id} className={taskObj.isDone ? "is-done" : ""}>
-        <input
+        <Checkbox
+          color={"primary"}
           onChange={changeStatus}
-          type="checkbox"
           checked={taskObj.isDone}/>
+        {/*<input*/}
+        {/*  onChange={changeStatus}*/}
+        {/*  type="checkbox"*/}
+        {/*  checked={taskObj.isDone}/>*/}
         <EditableSpan value={taskObj.title} getNewTitle={changeTaskTitle}/>
-        <button onClick={removeTask}>x</button>
+        {/*<button onClick={removeTask}>x</button>*/}
+        <IconButton onClick={removeTask}>
+          <Delete/>
+        </IconButton>
+
+
 
       </li>
     )
@@ -85,46 +96,48 @@ function TodoList(props: PropsType) {
   }
 
 
-return (
-  <div>
-    <h3>
-      <EditableSpan value={props.title} getNewTitle={changeTodoListTitle}/>
-
-      <button onClick={removeTodoList}>x</button>
-    </h3>
-    <AddItemForm addItem={addTask}/>
-    {/*<div>*/}
-    {/*  <input*/}
-    {/*    value={title}*/}
-    {/*    onChange={onChangeHandler}*/}
-    {/*    onKeyPress={onKeyPressEnter}*/}
-    {/*    className={error ? "error" : ''}*/}
-    {/*  />*/}
-    {/*  <button onClick={addTask}>+</button>*/}
-    {/*  {error && <div className={'error-message'}>{error}</div>}*/}
-    {/*</div>*/}
-    <ul>
-      {tasks}
-    </ul>
+  return (
     <div>
-      <button
-        className={props.filter === "all" ? "active-filter" : ""}
-        onClick={onAllClickHandler}>All
-      </button>
-      <button
-        className={props.filter === "active" ? "active-filter" : ""}
-
-        onClick={onActiveClickHandler}>Active
-      </button>
-      <button
-        className={props.filter === "completed" ? "active-filter" : ""}
-
-        onClick={onCompletedClickHandler}>Completed
-      </button>
+      <h3>
+        <EditableSpan value={props.title} getNewTitle={changeTodoListTitle}/>
+        {/*<button onClick={removeTodoList}>x</button>*/}
+        <IconButton onClick={removeTodoList}>
+          <Delete/>
+        </IconButton>
+      </h3>
+      <AddItemForm addItem={addTask}/>
+      {/*<div>*/}
+      {/*  <input*/}
+      {/*    value={title}*/}
+      {/*    onChange={onChangeHandler}*/}
+      {/*    onKeyPress={onKeyPressEnter}*/}
+      {/*    className={error ? "error" : ''}*/}
+      {/*  />*/}
+      {/*  <button onClick={addTask}>+</button>*/}
+      {/*  {error && <div className={'error-message'}>{error}</div>}*/}
+      {/*</div>*/}
+      <ul style={{listStyle: "none", padding: "0"}}>
+        {tasks}
+      </ul>
+      <div style={{textAlign: "center"}}>
+        {/*<ButtonGroup size={"small"} color={"primary"} >*/}
+          <Button
+            variant={props.filter === "all" ? "contained" : "outlined"}
+            onClick={onAllClickHandler}>All
+          </Button>
+          <Button
+            variant={props.filter === "active" ? "contained" : "outlined"}
+            onClick={onActiveClickHandler}>Active
+          </Button>
+          <Button
+            variant={props.filter === "completed" ? "contained" : "outlined"}
+            onClick={onCompletedClickHandler}>Completed
+          </Button>
+        {/*</ButtonGroup>*/}
+      </div>
     </div>
-  </div>
 
-);
+  );
 }
 
 
