@@ -22,9 +22,6 @@ type PropsType = {
 
 function TodoList(props: PropsType) {
 
-  // const [title, setTitle] = useState<string>("")
-  // const [error, setError] = useState<string | null>(null)
-
   const tasks = props.tasks.map(taskObj => {
     const removeTask = () => {
       props.removeTask(taskObj.id, props.id)
@@ -41,39 +38,14 @@ function TodoList(props: PropsType) {
           color={"primary"}
           onChange={changeStatus}
           checked={taskObj.isDone}/>
-        {/*<input*/}
-        {/*  onChange={changeStatus}*/}
-        {/*  type="checkbox"*/}
-        {/*  checked={taskObj.isDone}/>*/}
         <EditableSpan value={taskObj.title} getNewTitle={changeTaskTitle}/>
-        {/*<button onClick={removeTask}>x</button>*/}
         <IconButton onClick={removeTask}>
           <Delete/>
         </IconButton>
-
-
-
       </li>
     )
   })
 
-  // function addTask() {
-  //   const trimmedTitle = title.trim()
-  //   if (trimmedTitle) {
-  //     props.addTask(trimmedTitle,props.id)
-  //   } else {
-  //     setError("Title is required!")
-  //   }
-  //   setTitle("")
-  // }
-
-  // const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-  //   setTitle(e.currentTarget.value)
-  //   setError(null)
-  // }
-  // const onKeyPressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-  //   if (e.key === "Enter") addTask()
-  // }
   const onAllClickHandler = () => {
     props.changeFilter("all", props.id)
   }
@@ -106,39 +78,25 @@ function TodoList(props: PropsType) {
         </IconButton>
       </h3>
       <AddItemForm addItem={addTask}/>
-      {/*<div>*/}
-      {/*  <input*/}
-      {/*    value={title}*/}
-      {/*    onChange={onChangeHandler}*/}
-      {/*    onKeyPress={onKeyPressEnter}*/}
-      {/*    className={error ? "error" : ''}*/}
-      {/*  />*/}
-      {/*  <button onClick={addTask}>+</button>*/}
-      {/*  {error && <div className={'error-message'}>{error}</div>}*/}
-      {/*</div>*/}
       <ul style={{listStyle: "none", padding: "0"}}>
         {tasks}
       </ul>
       <div style={{textAlign: "center"}}>
-        {/*<ButtonGroup size={"small"} color={"primary"} >*/}
-          <Button
-            variant={props.filter === "all" ? "contained" : "outlined"}
-            onClick={onAllClickHandler}>All
-          </Button>
-          <Button
-            variant={props.filter === "active" ? "contained" : "outlined"}
-            onClick={onActiveClickHandler}>Active
-          </Button>
-          <Button
-            variant={props.filter === "completed" ? "contained" : "outlined"}
-            onClick={onCompletedClickHandler}>Completed
-          </Button>
-        {/*</ButtonGroup>*/}
+        <Button
+          variant={props.filter === "all" ? "contained" : "outlined"}
+          onClick={onAllClickHandler}>All
+        </Button>
+        <Button
+          variant={props.filter === "active" ? "contained" : "outlined"}
+          onClick={onActiveClickHandler}>Active
+        </Button>
+        <Button
+          variant={props.filter === "completed" ? "contained" : "outlined"}
+          onClick={onCompletedClickHandler}>Completed
+        </Button>
       </div>
     </div>
-
   );
 }
-
 
 export default TodoList
