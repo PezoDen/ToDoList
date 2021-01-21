@@ -1,9 +1,10 @@
-import React, {ChangeEvent} from 'react';
+import React, {useCallback} from 'react';
 import {FilterValuesType, TaskType} from "./App";
 import AddItemForm from "./AdditemForm";
 import {EditableSpan} from "./EditableSpan";
-import {Button, Checkbox, IconButton} from "@material-ui/core";
+import {Button, IconButton} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {Task} from "./Task";
 
 type PropsType = {
   id: string
@@ -20,31 +21,43 @@ type PropsType = {
 }
 
 
-function TodoList(props: PropsType) {
+const TodoList = React.memo((props: PropsType) => {
+  const {id, addTask, changeTodoListTitle} = props
+  console.log("Todolist called")
 
-  const tasks = props.tasks.map(taskObj => {
-    const removeTask = () => {
-      props.removeTask(taskObj.id, props.id)
-    }
-    const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
-      props.changeStatus(taskObj.id, e.currentTarget.checked, props.id)
-    }
-    const changeTaskTitle = (title: string) => {
-      props.changeTaskTitle(taskObj.id, title, props.id)
-    }
-    return (
-      <li key={taskObj.id} className={taskObj.isDone ? "is-done" : ""}>
-        <Checkbox
-          color={"primary"}
-          onChange={changeStatus}
-          checked={taskObj.isDone}/>
-        <EditableSpan value={taskObj.title} getNewTitle={changeTaskTitle}/>
-        <IconButton onClick={removeTask}>
-          <Delete/>
-        </IconButton>
-      </li>
-    )
-  })
+  let tasksForTodolist = props.tasks
+
+  if (props.filter === "active") {
+    tasksForTodolist = props.tasks.filter(task => !task.isDone)
+  }
+  if (props.filter === "completed") {
+    tasksForTodolist = props.tasks.filter(task => task.isDone)
+  }
+
+  // const tasks = tasksForTodolist.map(taskObj => {
+  //   const removeTask = () => {
+  //     props.removeTask(taskObj.id, props.id)
+  //   }
+  //   const changeStatus = (e: ChangeEvent<HTMLInputElement>) => {
+  //     props.changeStatus(taskObj.id, e.currentTarget.checked, props.id)
+  //   }
+  //   const changeTaskTitle = (title: string) => {
+  //     props.changeTaskTitle(taskObj.id, title, props.id)
+  //   }
+  //
+  //   return (
+  //     <li key={taskObj.id} className={taskObj.isDone ? "is-done" : ""}>
+  //       <Checkbox
+  //         color={"primary"}
+  //         onChange={changeStatus}
+  //         checked={taskObj.isDone}/>
+  //       <EditableSpan value={taskObj.title} getNewTitle={changeTaskTitle}/>
+  //       <IconButton onClick={removeTask}>
+  //         <Delete/>
+  //       </IconButton>
+  //     </li>
+  //   )
+  // })
 
   const onAllClickHandler = () => {
     props.changeFilter("all", props.id)
@@ -59,27 +72,36 @@ function TodoList(props: PropsType) {
     props.removeTodoList(props.id)
   }
 
-  const addTask = (title: string) => {
-    props.addTask(title, props.id)
+  const addTaskHandler = useCallback((title: string) => {
+    addTask(title, id)
+  }, [addTask, id])
+
+  const changeTDLTitle = useCallback((title: string) => {
+    changeTodoListTitle(id, title)
+  }, [changeTodoListTitle, id])
+
+
+  const tasksMapCallback = (taskObj: TaskType) => {
+
+    return (
+      <Task
+        key={taskObj.id}
+        taskId={taskObj.id}
+        todoListId={props.id}/>
+    )
   }
-
-  const changeTodoListTitle = (title: string) => {
-    props.changeTodoListTitle(props.id, title)
-  }
-
-
   return (
     <div>
       <h3>
-        <EditableSpan value={props.title} getNewTitle={changeTodoListTitle}/>
+        <EditableSpan value={props.title} getNewTitle={changeTDLTitle}/>
         {/*<button onClick={removeTodoList}>x</button>*/}
         <IconButton onClick={removeTodoList}>
           <Delete/>
         </IconButton>
       </h3>
-      <AddItemForm addItem={addTask}/>
+      <AddItemForm addItem={addTaskHandler}/>
       <ul style={{listStyle: "none", padding: "0"}}>
-        {tasks}
+        {tasksForTodolist.map(tasksMapCallback)}
       </ul>
       <div style={{textAlign: "center"}}>
         <Button
@@ -97,6 +119,6 @@ function TodoList(props: PropsType) {
       </div>
     </div>
   );
-}
+})
 
 export default TodoList
