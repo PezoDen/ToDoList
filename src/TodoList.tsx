@@ -87,7 +87,7 @@ const TodoList = React.memo((props: PropsType) => {
       <Task
         key={taskObj.id}
         taskId={taskObj.id}
-        todoListId={props.id}/>
+        todolistId={props.id}/>
     )
   }
   return (
