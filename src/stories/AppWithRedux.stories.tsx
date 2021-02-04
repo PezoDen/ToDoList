@@ -2,12 +2,7 @@ import React from 'react';
 // also exported from '@storybook/react' if you can deal witл
 //
 // h breaking changes in 6.1
-import {Story, Meta} from '@storybook/react/types-6-0';
-
-import {Button, ButtonProps} from './Button';
-
-import {action} from "@storybook/addon-actions";
-import AddItemForm, { AddItemFormPropsType } from "../AdditemForm";
+import {Meta, Story} from '@storybook/react/types-6-0';
 import AppWithRedux from "../AppWithRedux";
 import {ReduxStoreProviderDecorator} from "./decoratos/ReduxStoreProviderDecorator";
 
