@@ -1,59 +1,47 @@
 import React from 'react';
 // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
 import {Meta, Story} from '@storybook/react/types-6-0';
-import {PropsType, Task} from "../Task";
-import {ReduxStoreProviderDecorator} from "./decoratos/ReduxStoreProviderDecorator";
+
+import {action} from "@storybook/addon-actions";
+import {Task, TaskPropsType} from "../components/Task/Task";
+import {Priorities, TaskStatuses} from "../api/todolist-api";
 
 export default {
-  title: 'Todolists/Task',
-  component: Task,
-  argTypes: {},
-  decorators:[ReduxStoreProviderDecorator]
+    title: 'Todolist/Task',
+    component: Task,
+    argTypes: {
+        backgroundColor: {control: 'color'},
+    },
 } as Meta;
 
+const changeTaskStatusCallback = action('Status changed inside Task')
+const changeTaskTitleCallback = action('Title changed inside Task')
+const removeTaskCallback = action('Remove button  inside Task clicked')
 
+const Template: Story<TaskPropsType> = (args) => <Task {...args} />;
 
-const Template: Story<PropsType> = (args) => <Task {...args} />;
-
+const baseArgs = {
+    changeTaskStatus: changeTaskStatusCallback,
+    changeTaskTitle: changeTaskTitleCallback,
+    removeTask: removeTaskCallback
+}
 
 export const TaskIsDoneExample = Template.bind({});
 TaskIsDoneExample.args = {
-  taskId: '1',
-  todolistId: "2"
+    ...baseArgs,
+    task: {
+        id: '1', status: TaskStatuses.Completed, title: 'JS', addedDate: "", deadline: "",
+        priority: Priorities.Low, startDate: "", todoListId: "todolistId1", description: "", order: 0
+    },
+    todolistId: 'todolistId1'
 }
-export const TaskNotIsDoneExample = Template.bind({});
-TaskNotIsDoneExample.args = {
-  taskId: '1',
-  todolistId: "2"
+
+export const TaskIsNotDoneExample = Template.bind({});
+TaskIsNotDoneExample.args = {
+    ...baseArgs,
+    task: {
+        id: '1', status: TaskStatuses.New, title: 'JS', addedDate: "", deadline: "",
+        priority: Priorities.Low, startDate: "", todoListId: "todolistId1", description: "", order: 0
+    },
+    todolistId: 'todolistId1'
 }
-//
-// import React from 'react';
-// // also exported from '@storybook/react' if you can deal with breaking changes in 6.1
-// import {Meta, Story} from '@storybook/react/types-6-0';
-// import {action} from "@storybook/addon-actions";
-// import {Task, PropsType} from "../Task";
-//
-// export default {
-//   title: 'Todolists/Task',
-//   component: Task,
-//   argTypes: {},
-//   args: {
-//     removeTask: action('Title changed inside Task'),
-//     changeTaskStatus: action('Remove button inside Task clicked'),
-//     changeTaskTitle: action('Status changed inside Task'),
-//   },
-// } as Meta;
-//
-// const Template: Story<PropsType> = (args) => <Task {...args} />;
-//
-// export const TaskIsDoneExample = Template.bind({});
-//
-// TaskIsDoneExample.args = {
-//   task: {id: "1", isDone: true, title: "JS"},
-//   todolistId: "1"
-// }
-// export const TaskIsNotDoneExample = Template.bind({});
-// TaskIsNotDoneExample.args = {
-//   task: {id: "2", isDone: false, title: "HTML"},
-//   todolistId: "2"
-// }
