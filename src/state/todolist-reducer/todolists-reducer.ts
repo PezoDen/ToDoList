@@ -22,7 +22,7 @@ export const todolistsReducer = (state: TodolistDomainType[] = initialState, act
        case 'REMOVE-TODOLIST':
            return state.filter(tl => tl.id !== action.id)
        case 'ADD-TODOLIST':
-           return [...state, {...action.todolist, filter: "all"}]
+           return [ {...action.todolist, filter: "all"}, ...state]
        case 'CHANGE-TODOLIST-TITLE':
            return state.map(tl => tl.id === action.id ? {...tl, title: action.title} : tl)
        case 'CHANGE-TODOLIST-FILTER':
