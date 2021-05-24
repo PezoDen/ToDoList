@@ -84,7 +84,7 @@ export const Todolist = React.memo((props: PropsType) => {
                 <Button color={"primary"}
                         variant={props.filter === "all" ? "contained" : "outlined"}
                         onClick={onAllClickHandler}>All</Button>
-                <Button
+                <Button color={"secondary"}
                     variant={props.filter === "active" ? "contained" : "outlined"}
                     onClick={onActiveClickHandler}>Active</Button>
                 <Button
